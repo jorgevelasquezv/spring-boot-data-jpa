@@ -22,13 +22,17 @@ public class ClientDaoImpl implements IClientDao{
     }
 
     @Override
-    public Client findById() {
-        return null;
+    public Client findById(Long id) {
+        return entityManager.find(Client.class, id);
     }
 
     @Transactional
     @Override
     public void save(Client client) {
-        entityManager.persist(client);
+        if (client.getId() != null && client.getId() > 0){
+            entityManager.merge(client);
+        }else {
+            entityManager.persist(client);
+        }
     }
 }

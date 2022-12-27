@@ -7,10 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.support.SessionStatus;
 
 @Controller
+@SessionAttributes("client")
 public class ClientController {
 
     @Autowired
@@ -35,7 +36,7 @@ public class ClientController {
     }
 
     @PostMapping("/form")
-    public String save(@Valid Client client, BindingResult result, Model model){
+    public String save(@Valid Client client, BindingResult result, Model model, SessionStatus status){
 
         if (result.hasFieldErrors()){
             model.addAttribute("titulo", "Formulario de Cliente");
@@ -44,7 +45,26 @@ public class ClientController {
 
         clientDao.save(client);
 
+        status.setComplete();
+
         return "redirect:list";
+    }
+
+    @GetMapping("/form/{id}")
+    public String edit(@PathVariable Long id, Model model){
+
+        Client client = null;
+
+        if (id > 0){
+            client = clientDao.findById(id);
+        }else {
+            return "list";
+        }
+
+        model.addAttribute("client", client);
+        model.addAttribute("titulo", "Editar Cliente");
+
+        return "form";
     }
 
 }
