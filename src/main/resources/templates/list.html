@@ -33,7 +33,7 @@
     <h2 class="text-secondary border-bottom border-success" th:text="${titulo}"></h2>
 
     <p>
-        <a class="nav-link btn btn-outline-primary btn-xs" th:href="@{/form}" >Crear Clientes</a>
+        <a class="nav-link btn btn-outline-primary btn-xs" th:href="@{/form}">Crear Clientes</a>
     </p>
 
     <table class="table table-striped">
@@ -60,7 +60,8 @@
             </td>
             <td>
                 <a th:href="@{/delete/} + ${cliente.id}" class="btn btn-outline-danger btn-xs"
-                   th:confirm-delete="'Esta seguro que desea elimar el cliente ' + ${cliente.name}"
+                   th:confirm-delete="'Esta seguro que desea elimar el cliente '
+                   + ${cliente.name} + ' ' + ${cliente.lastname} + ' ?'"
                    onclick="return confirm(this.getAttribute('confirm-delete'))">Eliminar</a>
             </td>
         </tr>
