@@ -11,4 +11,6 @@ public interface IClientDao {
     Client findById(Long id);
 
     void save(Client client);
+
+    void delete(Long id);
 }

@@ -21,6 +21,7 @@ public class ClientDaoImpl implements IClientDao{
         return entityManager.createQuery("from Client").getResultList();
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Client findById(Long id) {
         return entityManager.find(Client.class, id);
@@ -34,5 +35,11 @@ public class ClientDaoImpl implements IClientDao{
         }else {
             entityManager.persist(client);
         }
+    }
+
+    @Transactional
+    @Override
+    public void delete(Long id) {
+        entityManager.remove(findById(id));
     }
 }
