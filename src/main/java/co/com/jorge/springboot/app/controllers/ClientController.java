@@ -1,7 +1,7 @@
 package co.com.jorge.springboot.app.controllers;
 
-import co.com.jorge.springboot.app.models.dao.IClientDao;
 import co.com.jorge.springboot.app.models.entities.Client;
+import co.com.jorge.springboot.app.models.service.IClientService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,12 +15,12 @@ import org.springframework.web.bind.support.SessionStatus;
 public class ClientController {
 
     @Autowired
-    private IClientDao clientDao;
+    private IClientService clientService;
 
     @GetMapping("/list")
     public String listAll(Model model){
         model.addAttribute("titulo", "Listado de clientes");
-        model.addAttribute("clientes", clientDao.findAll());
+        model.addAttribute("clientes", clientService.findAll());
 
         return "list";
     }
@@ -43,7 +43,7 @@ public class ClientController {
             return "form";
         }
 
-        clientDao.save(client);
+        clientService.save(client);
 
         status.setComplete();
 
@@ -56,7 +56,7 @@ public class ClientController {
         Client client = null;
 
         if (id > 0){
-            client = clientDao.findById(id);
+            client = clientService.findById(id);
         }else {
             return "list";
         }
@@ -71,7 +71,7 @@ public class ClientController {
     public String delete(@PathVariable Long id){
 
         if (id > 0 ){
-            clientDao.delete(id);
+            clientService.delete(id);
         }
 
         return "redirect:/list";
