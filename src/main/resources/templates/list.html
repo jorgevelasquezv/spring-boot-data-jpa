@@ -30,7 +30,9 @@
                 </thead>
                 <tbody>
                 <tr th:each="cliente: ${clientes}">
-                    <td th:text="${cliente.id}"></td>
+                    <td>
+                        <a class="btn btn-outline-secondary" th:href="@{/see/} + ${cliente.id}" th:text="${cliente.id}"></a>
+                    </td>
                     <td th:text="${cliente.name}"></td>
                     <td th:text="${cliente.lastname}"></td>
                     <td th:text="${cliente.email}"></td>

@@ -39,10 +39,7 @@ public class Client implements Serializable {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date createAt;
 
-//    @PrePersist
-//    public void prePersist(){
-//        createAt = new Date();
-//    }
+    private String photo;
 
     public Long getId() {
         return id;
@@ -82,5 +79,13 @@ public class Client implements Serializable {
 
     public void setCreateAt(Date createAt) {
         this.createAt = createAt;
+    }
+
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
     }
 }
