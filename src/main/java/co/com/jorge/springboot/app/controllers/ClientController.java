@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @SessionAttributes("client")
@@ -36,29 +37,36 @@ public class ClientController {
     }
 
     @PostMapping("/form")
-    public String save(@Valid Client client, BindingResult result, Model model, SessionStatus status){
+    public String save(@Valid Client client, BindingResult result, Model model, RedirectAttributes flash, SessionStatus status){
 
         if (result.hasFieldErrors()){
             model.addAttribute("titulo", "Formulario de Cliente");
             return "form";
         }
 
+        String mensajeFlash = (client.getId() != null) ? "Cliente editado con éxito" : "Cliente creado con éxito";
         clientService.save(client);
 
         status.setComplete();
+        flash.addFlashAttribute("success", mensajeFlash);
 
         return "redirect:list";
     }
 
     @GetMapping("/form/{id}")
-    public String edit(@PathVariable Long id, Model model){
+    public String edit(@PathVariable Long id, Model model, RedirectAttributes flash){
 
         Client client = null;
 
         if (id > 0){
             client = clientService.findById(id);
+            if (client == null){
+                flash.addFlashAttribute("error", "El id del cliente no existe en la BBDD");
+                return "redirect:/list";
+            }
         }else {
-            return "list";
+            flash.addFlashAttribute("error", "El id del cliente no puede ser 0");
+            return "redirect:/list";
         }
 
         model.addAttribute("client", client);
@@ -68,10 +76,11 @@ public class ClientController {
     }
 
     @GetMapping("/delete/{id}")
-    public String delete(@PathVariable Long id){
+    public String delete(@PathVariable Long id, RedirectAttributes flash){
 
         if (id > 0 ){
             clientService.delete(id);
+            flash.addFlashAttribute("success", "Cliente eliminado con éxito");
         }
 
         return "redirect:/list";
