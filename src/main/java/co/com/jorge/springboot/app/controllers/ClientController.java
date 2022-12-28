@@ -2,8 +2,12 @@ package co.com.jorge.springboot.app.controllers;
 
 import co.com.jorge.springboot.app.models.entities.Client;
 import co.com.jorge.springboot.app.models.service.IClientService;
+import co.com.jorge.springboot.app.util.paginator.PageRender;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,9 +23,18 @@ public class ClientController {
     private IClientService clientService;
 
     @GetMapping("/list")
-    public String listAll(Model model){
+    public String listAll(@RequestParam(name = "page", defaultValue = "0") int page, Model model){
+
+        Pageable pageRequest = PageRequest.of(page, 4);
+
+        Page<Client> clients = clientService.findAll(pageRequest);
+
+        PageRender<Client> pageRender = new PageRender<>("/list", clients);
+
         model.addAttribute("titulo", "Listado de clientes");
-        model.addAttribute("clientes", clientService.findAll());
+//        model.addAttribute("clientes", clientService.findAll());
+        model.addAttribute("clientes", clients);
+        model.addAttribute("page", pageRender);
 
         return "list";
     }
