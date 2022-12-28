@@ -22,6 +22,7 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
@@ -39,9 +40,11 @@ public class ClientController {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
+    private static final String UPLOADS_FOLDER = "uploads";
+
     @GetMapping("/uploads/{filename:.+}")
     public ResponseEntity<Resource> seePhoto(@PathVariable String filename) {
-        Path pathPhoto = Paths.get("uploads").resolve(filename).toAbsolutePath();
+        Path pathPhoto = Paths.get(UPLOADS_FOLDER).resolve(filename).toAbsolutePath();
         log.info("PathPhoto: " + pathPhoto);
 
         Resource resource = null;
@@ -109,16 +112,25 @@ public class ClientController {
 
         if (!photo.isEmpty()) {
 
+            if(client.getId() != null && client.getId() > 0 && client.getPhoto() != null && client.getPhoto().length() > 0){
+                Path rootPath = Paths.get(UPLOADS_FOLDER).resolve(client.getPhoto()).toAbsolutePath();
+                File file = rootPath.toFile();
+
+                if (file.exists() && file.canRead()){
+                    file.delete();
+                }
+            }
+
             String uniqueFilename = UUID.randomUUID().toString() + "_" + photo.getOriginalFilename();
 
 //            Carga imágenes en directorio interno del proyecto
-//            Path directoryRecurs = Paths.get("src//main//resources//static//uploads");
+//            Path directoryRecurs = Paths.get("src//main//resources//static//UPLOADS_FOLDER");
 //            String rootPath = directoryRecurs.toFile().getAbsolutePath();
 
 //            Ruta externa al proyecto
 //            String rootPath = "C://Temp//uploads";
 
-            Path rootPath = Paths.get("uploads").resolve(uniqueFilename);
+            Path rootPath = Paths.get(UPLOADS_FOLDER).resolve(uniqueFilename);
             Path rootAbsolutPath = rootPath.toAbsolutePath();
 
             log.info("rootPath: " + rootPath);
@@ -126,7 +138,7 @@ public class ClientController {
 
 
             try {
-//                Cargar imagen con metodos directorio interno del proyecto y externo
+//                Cargar imagen con métodos directorio interno del proyecto y externo
 //                byte[] bytes = photo.getBytes();
 //                Path pathComplete = Paths.get(rootPath + "/" + uniqueFilename);
 //                Files.write(pathComplete, bytes);
@@ -175,8 +187,18 @@ public class ClientController {
     public String delete(@PathVariable Long id, RedirectAttributes flash) {
 
         if (id > 0) {
+            Client client = clientService.findById(id);
             clientService.delete(id);
             flash.addFlashAttribute("success", "Cliente eliminado con éxito");
+
+            Path rootPath = Paths.get(UPLOADS_FOLDER).resolve(client.getPhoto()).toAbsolutePath();
+            File file = rootPath.toFile();
+
+            if (file.exists() && file.canRead()){
+                if (file.delete()){
+                    flash.addFlashAttribute("info", "Foto " + client.getPhoto() + " eliminada con éxito");
+                }
+            }
         }
 
         return "redirect:/list";
