@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-<head th:replace="layout/layout ::head "></head>
+<head th:replace="~{layout/layout ::head}"></head>
 <body>
 
-<header th:replace="layout/layout ::header "></header>
+<header th:replace="~{layout/layout ::header}"></header>
 
 <div class="container py-4">
 
@@ -13,7 +13,12 @@
         </div>
         <div class="card-body">
 
-            <img th:if="${#strings.length(client.photo) > 0}" class="img-thumbnail rounded float-start" style="max-width: 25%;"
+            <h3 class="card-title">
+                <a th:href="@{'/invoice/form/' + ${client.id}}" class="btn btn-outline-primary btn-xs">Crear Factura</a>
+            </h3>
+
+            <img th:if="${#strings.length(client.photo) > 0}" class="img-thumbnail rounded float-start"
+                 style="max-width: 25%;"
                  th:src="@{'/uploads/' + ${client.photo}}" th:alt="${client.photo}"/>
             <ul class="list-group list-group-flush">
                 <li class="list-group-item bg-dark text-white" th:text="${client.name}"></li>
@@ -21,9 +26,39 @@
                 <li class="list-group-item bg-dark text-white" th:text="${client.email}"></li>
                 <li class="list-group-item bg-dark text-white" th:text="${client.createAt}"></li>
             </ul>
+            <div class="alert alert-info my-4" th:if="${#lists.isEmpty(client.invoices)}"
+                 th:text="'No hay facturas asignadas para el cliente ' + ${client.name} + ' '+ ${client.lastname} "></div>
+            <table class="table table-bordered table-striped my-4 text-white"
+                   th:if="${!#lists.isEmpty(client.invoices)}">
+                <thead>
+                <tr>
+                    <th>Folio</th>
+                    <th>Descripción</th>
+                    <th>Fecha</th>
+                    <th>Total</th>
+                    <th>Ver</th>
+                    <th>Eliminar</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="invoice: ${client.invoices}" class="text-white">
+                    <td th:text="${invoice.id}" class="text-white"></td>
+                    <td th:text="${invoice.description}" class="text-white"></td>
+                    <td th:text="${invoice.createAt}" class="text-white"></td>
+                    <td th:text="${invoice.total}" class="text-white"></td>
+                    <td class="text-white">
+                        <a th:href="@{'/invoice/see/' + ${invoice.id}}" class="btn btn-outline-primary btn-sm">Detalle</a>
+                    </td>
+                    <td class="text-white">
+                        <a th:href="@{'/invoice/delete/' + ${invoice.id}}" class="btn btn-outline-danger btn-sm"
+                        onclick="return confirm('¿Esta seguro que desa eliminar la factura?');">Eliminar</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
-<footer th:replace="layout/layout ::footer "></footer>
+<footer th:replace="~{layout/layout ::footer}"></footer>
 </body>
 </html>

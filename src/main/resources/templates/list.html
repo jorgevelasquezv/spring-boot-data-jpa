@@ -1,22 +1,22 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-<head th:replace="layout/layout ::head "></head>
+<head th:replace="~{layout/layout ::head}"></head>
 <body>
 
-<header th:replace="layout/layout ::header "></header>
+<header th:replace="~{layout/layout ::header}"></header>
 
 <div class="container py-4">
 
-    <div class="card bg-light">
+    <div class="card bg-dark">
         <div class="card-header">
             <h2 class="text-secondary border-bottom border-success" th:text="${titulo}"></h2>
         </div>
-        <div class="card-body">
+        <div class="card-body bg-dark">
             <h4 class="card-title">
                 <a class="btn btn-outline-primary btn-xs" th:href="@{/form}">Crear Clientes</a>
             </h4>
 
-            <table class="table table-striped">
+            <table class="table table-dark table-striped">
                 <thead>
                 <tr>
                     <th>Id</th>
@@ -24,6 +24,7 @@
                     <th>Apellido</th>
                     <th>Email</th>
                     <th>Fecha</th>
+                    <th>Crear Factura</th>
                     <th>Editar</th>
                     <th>Eliminar</th>
                 </tr>
@@ -38,6 +39,10 @@
                     <td th:text="${cliente.email}"></td>
                     <td th:text="${cliente.createAt}"></td>
                     <td>
+                        <a th:href="@{'/invoice/form/' + ${cliente.id}}" class="btn btn-outline-success btn-xs">Crear
+                            Factura</a>
+                    </td>
+                    <td>
                         <a th:href="@{/form/} + ${cliente.id}" class="btn btn-outline-warning btn-xs">Editar</a>
                     </td>
                     <td>
@@ -49,11 +54,11 @@
                 </tr>
                 </tbody>
             </table>
-            <nav th:replace="paginator-nav ::paginator"></nav>
+            <nav th:replace="~{paginator-nav ::paginator}"></nav>
         </div>
     </div>
 </div>
 
-<footer th:replace="layout/layout ::footer "></footer>
+<footer th:replace="~{layout/layout ::footer}"></footer>
 </body>
 </html>

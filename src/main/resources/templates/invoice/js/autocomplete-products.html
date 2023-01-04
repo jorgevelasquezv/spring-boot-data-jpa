@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<body>
+<script type="text/javascript" th:fragment="javascript">
+    $(document).ready(function () {
+        $("#buscar_producto").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: "/invoice/load-products/" + request.term,
+                    dataType: "json",
+                    data: {
+                        term: request.term
+                    },
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                                return {
+                                    value: item.id,
+                                    label: item.name,
+                                    price: item.price,
+                                }
+                            }
+                        ))
+                    }
+                });
+            },
+            select: function (event, ui) {
+                // $("#buscar_producto").val(ui.item.label);
+                if (itemsHelper.hasProduct(ui.item.value)) {
+                    itemsHelper.boostQuantity(ui.item.value, ui.item.price);
+                    return false;
+                }
+                let line = $("#layoutItemsInvoice").html();
+                line = line.replace(/{ID}/g, ui.item.value);
+                line = line.replace(/{NAME}/g, ui.item.label);
+                line = line.replace(/{PRICE}/g, ui.item.price);
+                $("#loadItemsProducts tbody").append(line);
+                itemsHelper.calculatePrice(ui.item.value, ui.item.price, 1);
+                return false;
+            }
+        });
+      $("form").submit(function () {
+          $(`#layoutItemsInvoice`).remove();
+          return;
+      })
+    });
+    const itemsHelper = {
+        calculatePrice: function(id, price, quantity) {
+            $("#total_price_" + id).html(parseInt(price) * parseInt(quantity));
+            this.calculateGrandTotal();
+        },
+        hasProduct: function (id) {
+            let result = false;
+            $('input[name="item_id[]"]').each(function () {
+                if (parseInt(id) == $(this).val()) {
+                    result = true;
+                }
+            });
+            return result;
+        },
+        boostQuantity: function (id, price) {
+            let quantity = $(`#quantity_${id}`).val() ? parseInt($(`#quantity_${id}`).val()) : 0;
+            $("#quantity_" + id).val(++quantity);
+            this.calculatePrice(id, price, quantity);
+        },
+        deleteItemInvoice: function (id){
+            $(`#row_${id}`).remove();
+            this.calculateGrandTotal();
+        },
+        calculateGrandTotal: function () {
+            let total = 0;
+            $('span[id^="total_price_"]').each(function () {
+                total += parseInt($(this).html());
+            });
+            $(`#grand_total`).html(total);
+        }
+    }
+</script>
+<!--<script type="text/javascript" th:fragment="javascript">-->
+<!--    $(document).ready(function () {-->
+<!--       $("#buscar_producto").autocomplete({-->
+<!--         source: function (request, response) {-->
+<!--             $.ajax({-->
+<!--                 url: "/invoice/load-products/" + request.term,-->
+<!--                 dataType: "json",-->
+<!--                 data: {-->
+<!--                     term: request.term-->
+<!--                 },-->
+<!--                 success: function (data) {-->
+<!--                     response($.map(data, function (item){-->
+<!--                         return {-->
+<!--                             value: item.id,-->
+<!--                             label: item.name,-->
+<!--                             price: item.price-->
+<!--                         };-->
+<!--                     }));-->
+<!--                 },-->
+<!--             });-->
+<!--         },-->
+<!--         select: function (event, ui){-->
+<!--             $("#buscar_producto").val(ui.item.label);-->
+<!--             return false;-->
+<!--         }-->
+<!--       });-->
+<!--    });-->
+<!--</script>-->
+</body>
+</html>

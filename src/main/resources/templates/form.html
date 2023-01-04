@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-<head th:replace="layout/layout ::head "></head>
+<head th:replace="~{layout/layout ::head}"></head>
 <body>
 
-<header th:replace="layout/layout ::header "></header>
+<header th:replace="~{layout/layout ::header}"></header>
 
 <div class="container py-4">
 
@@ -77,6 +77,6 @@
         </div>
     </div>
 </div>
-<footer th:replace="layout/layout ::footer "></footer>
+<footer th:replace="~{layout/layout ::footer}"></footer>
 </body>
 </html>

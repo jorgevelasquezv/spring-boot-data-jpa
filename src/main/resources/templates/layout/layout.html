@@ -4,6 +4,7 @@
     <meta charset="UTF-8"/>
     <title th:text="'Sping Boot MVC + thymeleaf + Data JPA - ' + ${titulo}"></title>
     <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/css/jquery-ui.min.css}" rel="stylesheet">
 </head>
 <body>
 <header th:fragment="header">
@@ -36,25 +37,25 @@
 
 <footer th:fragment="footer" class="container">
     <hr/>
-    <img th:src="@{/images/spring.png}" alt="Spring Logo"/>
-    <p>
-        Powered by <a href="http://projects.spring.io/spring-boot/">Spring Boot</a> y <a
-            href="http://www.thymeleaf.org">Thymeleaf</a>.
-    </p>
-    <p>
-        Este proyecto fue desarrollado en IDE IntelliJ, Jorge Velásquez.<br/> &copy; Company 2017, Inc. Todos los
-        derechos reservados. Términos de uso y privacidad <br/>
-    </p>
+    <div class="row">
+        <img class="col-sm-4 w-25 mb-3" th:src="@{/images/spring.png}" alt="Spring Logo"/>
+        <div class="col-sm-8 my-4">
+            <p>
+                Powered by <a href="http://projects.spring.io/spring-boot/">Spring Boot</a> y <a
+                    href="http://www.thymeleaf.org">Thymeleaf</a>.
+            </p>
+            <p>
+                Este proyecto fue desarrollado en IDE IntelliJ, Jorge Velásquez.<br/> &copy; Company 2017, Inc. Todos los
+                derechos reservados. Términos de uso y privacidad <br/>
+            </p>
+        </div>
+    </div>
 
-    <script th:src="@{/js/popper.min.js}"
-            integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
-            crossorigin="anonymous"></script>
-    <script th:src="@{/js/bootstrap.min.js}"
-            integrity="sha384-mQ93GR66B00ZXjt0YO5KlohRA5SY2XofN4zfuZxLkoj1gXtW8ANNCe9d5Y3eG5eD"
-            crossorigin="anonymous"></script>
-    <script th:src="@{/js/bootstrap.bundle.min.js}"
-            integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
-            crossorigin="anonymous"></script>
+    <script th:src="@{/js/jquery-3.6.3.min.js}"></script>
+    <script th:src="@{/js/jquery-ui.min.js}"></script>
+    <script th:src="@{/js/popper.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
 </footer>
 </body>
 </html>

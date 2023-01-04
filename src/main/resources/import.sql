@@ -28,3 +28,34 @@ INSERT INTO clientes (nombre, apellido, email, create_at, photo) VALUES('Lucas',
 INSERT INTO clientes (nombre, apellido, email, create_at, photo) VALUES('Merlin', 'Mago', 'merlinm@mail.com', '2022-12-26', '');
 INSERT INTO clientes (nombre, apellido, email, create_at, photo) VALUES('Nicolas', 'Nulo', 'nicolasn@mail.com', '2022-12-26', '');
 INSERT INTO clientes (nombre, apellido, email, create_at, photo) VALUES('Nino', 'Noreña', 'ninon@mail.com', '2022-12-26', '');
+
+
+INSERT INTO productos (nombre, precio, create_at) VALUES('LG Televisor LED 40 PULG', 1100, NOW() );
+INSERT INTO productos (nombre, precio, create_at) VALUES('Samsung Televisor LED 40 PULG', 1150, NOW() );
+INSERT INTO productos (nombre, precio, create_at) VALUES('Olimpo Televisor LED 40 PULG', 1000, NOW() );
+INSERT INTO productos (nombre, precio, create_at) VALUES('Kaley Televisor LED 40 PULG', 950, NOW() );
+INSERT INTO productos (nombre, precio, create_at) VALUES('LG Televisor LED 33 PULG', 900, NOW() );
+INSERT INTO productos (nombre, precio, create_at) VALUES('Samsung Televisor LED 33 PULG', 950, NOW() );
+INSERT INTO productos (nombre, precio, create_at) VALUES('Olimpo Televisor LED 33 PULG', 850, NOW() );
+INSERT INTO productos (nombre, precio, create_at) VALUES('Kaley Televisor LED 33 PULG', 800, NOW() );
+INSERT INTO productos (nombre, precio, create_at) VALUES('LG Barra de sonido', 700, NOW() );
+INSERT INTO productos (nombre, precio, create_at) VALUES('Samsung Barra de sonido', 800, NOW() );
+INSERT INTO productos (nombre, precio, create_at) VALUES('Olimpo Barra de sonido', 600, NOW() );
+INSERT INTO productos (nombre, precio, create_at) VALUES('Kaley Barra de sonido', 590, NOW() );
+INSERT INTO productos (nombre, precio, create_at) VALUES('Teclado Gamer', 200, NOW() );
+INSERT INTO productos (nombre, precio, create_at) VALUES('Mouse Gamer', 150, NOW() );
+
+
+INSERT INTO facturas (descripcion, observacion, cliente_id, create_at) VALUES('Factura equipos de oficina', null, 1, NOW() );
+INSERT INTO items_facturas (cantidad, factura_id, producto_id) VALUES(1, 1, 1);
+INSERT INTO items_facturas (cantidad, factura_id, producto_id) VALUES(2, 1, 4);
+INSERT INTO items_facturas (cantidad, factura_id, producto_id) VALUES(1, 1, 5);
+INSERT INTO items_facturas (cantidad, factura_id, producto_id) VALUES(1, 1, 7);
+
+INSERT INTO facturas (descripcion, observacion, cliente_id, create_at) VALUES('Factura Electrodomesticos', 'Alguna nota', 1, NOW() );
+INSERT INTO items_facturas (cantidad, factura_id, producto_id) VALUES(3, 2, 6);
+INSERT INTO items_facturas (cantidad, factura_id, producto_id) VALUES(2, 2, 9);
+INSERT INTO items_facturas (cantidad, factura_id, producto_id) VALUES(1, 2, 1);
+INSERT INTO items_facturas (cantidad, factura_id, producto_id) VALUES(1, 2, 10);
+
+
