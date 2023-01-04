@@ -31,7 +31,8 @@ public class InvoiceController {
 
     @GetMapping("/see/{id}")
     public String see(@PathVariable Long id, Model model, RedirectAttributes flash){
-        Invoice invoice = clientService.findByInvoiceById(id);
+//        Invoice invoice = clientService.findByInvoiceById(id);
+        Invoice invoice = clientService.fetchInvoiceByIdWithClientWithItemInvoiceWithProduct(id);
 
         if (invoice == null){
             flash.addFlashAttribute("error", "Error: La factura no existe en la base de datos ");

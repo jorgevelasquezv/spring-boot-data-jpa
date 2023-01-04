@@ -58,6 +58,12 @@ public class ClienteServiceImpl implements IClientService{
 
     @Transactional(readOnly = true)
     @Override
+    public Client fetchByIdWithInvoice(Long id) {
+        return clientDao.fetchByIdWithInvoice(id);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
     public List<Product> findByName(String term) {
 
 //        return productDao.findByName(term);
@@ -86,6 +92,12 @@ public class ClienteServiceImpl implements IClientService{
     @Override
     public void deleteInvoice(Long id) {
         invoiceDao.deleteById(id);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public Invoice fetchInvoiceByIdWithClientWithItemInvoiceWithProduct(Long id) {
+        return invoiceDao.fetchByIdWithClientWithItemInvoiceWithProduct(id);
     }
 
 }
