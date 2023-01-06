@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:fragment="head">
     <meta charset="UTF-8"/>
     <title th:text="'Sping Boot MVC + thymeleaf + Data JPA - ' + ${titulo}"></title>
@@ -16,12 +16,30 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="#">Home</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" th:href="@{/list}">Clientes</a>
+                    </li>
+                </ul>
+                <ul class="m-0">
+                    <li sec:authorize="!isAuthenticated()">
+                        <a class="btn btn-outline-success" th:href="@{/login}">Login</a>
+                    </li>
+                    <li sec:authorize="isAuthenticated()" class="dropdown">
+                        <a class="btn btn-outline-secondary dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <span sec:authentication="name"></span>
+                        </a>
+
+                        <div class="dropdown-menu dropdown-menu-dark">
+                            <form id="formLogout" th:action="@{/logout}" method="post">
+                                <button onclick="document.getElementById('formLogout').onsubmit;" type="submit"
+                                class="dropdown-item">Logout</button>
+                                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                            </form>
+                        </div>
                     </li>
                 </ul>
             </div>
@@ -40,22 +58,25 @@
     <div class="row">
         <img class="col-sm-4 w-25 mb-3" th:src="@{/images/spring.png}" alt="Spring Logo"/>
         <div class="col-sm-8 my-4">
+            <p sec:authorize="isAuthenticated()">Usuario logueado: <span sec:authentication="name"></span>| Roles: <span sec:authentication="principal.authorities"></span>
+            </p>
             <p>
                 Powered by <a href="http://projects.spring.io/spring-boot/">Spring Boot</a> y <a
                     href="http://www.thymeleaf.org">Thymeleaf</a>.
             </p>
             <p>
-                Este proyecto fue desarrollado en IDE IntelliJ, Jorge Velásquez.<br/> &copy; Company 2017, Inc. Todos los
+                Este proyecto fue desarrollado en IDE IntelliJ, Jorge Velásquez.<br/> &copy; Company 2017, Inc. Todos
+                los
                 derechos reservados. Términos de uso y privacidad <br/>
             </p>
         </div>
     </div>
 
     <script th:src="@{/js/jquery-3.6.3.min.js}"></script>
-    <script th:src="@{/js/jquery-ui.min.js}"></script>
     <script th:src="@{/js/popper.min.js}"></script>
     <script th:src="@{/js/bootstrap.min.js}"></script>
-    <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{/js/jquery-ui.min.js}"></script>
+<!--    <script th:src="@{/js/bootstrap.bundle.min.js}"></script>-->
 </footer>
 </body>
 </html>

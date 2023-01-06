@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="~{layout/layout ::head}"></head>
 <body>
 
@@ -13,39 +13,39 @@
         </div>
         <div class="card-body bg-dark">
             <h4 class="card-title">
-                <a class="btn btn-outline-primary btn-xs" th:href="@{/form}">Crear Clientes</a>
+                <a class="btn btn-outline-primary btn-xs" th:href="@{/form}" sec:authorize="hasRole('ROLE_ADMIN')">Crear Clientes</a>
             </h4>
 
             <table class="table table-dark table-striped">
                 <thead>
                 <tr>
-                    <th>Id</th>
+                    <th sec:authorize="hasRole('ROLE_USER')">Id</th>
                     <th>Nombre</th>
                     <th>Apellido</th>
                     <th>Email</th>
                     <th>Fecha</th>
-                    <th>Crear Factura</th>
-                    <th>Editar</th>
-                    <th>Eliminar</th>
+                    <th sec:authorize="hasRole('ROLE_ADMIN')">Crear Factura</th>
+                    <th sec:authorize="hasRole('ROLE_ADMIN')">Editar</th>
+                    <th sec:authorize="hasRole('ROLE_ADMIN')">Eliminar</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr th:each="cliente: ${clientes}">
-                    <td>
+                    <td sec:authorize="hasRole('ROLE_USER')">
                         <a class="btn btn-outline-secondary" th:href="@{/see/} + ${cliente.id}" th:text="${cliente.id}"></a>
                     </td>
                     <td th:text="${cliente.name}"></td>
                     <td th:text="${cliente.lastname}"></td>
                     <td th:text="${cliente.email}"></td>
                     <td th:text="${cliente.createAt}"></td>
-                    <td>
+                    <td sec:authorize="hasRole('ROLE_ADMIN')">
                         <a th:href="@{'/invoice/form/' + ${cliente.id}}" class="btn btn-outline-success btn-xs">Crear
                             Factura</a>
                     </td>
-                    <td>
+                    <td sec:authorize="hasRole('ROLE_ADMIN')">
                         <a th:href="@{/form/} + ${cliente.id}" class="btn btn-outline-warning btn-xs">Editar</a>
                     </td>
-                    <td>
+                    <td sec:authorize="hasRole('ROLE_ADMIN')">
                         <a th:href="@{/delete/} + ${cliente.id}" class="btn btn-outline-danger btn-xs"
                            th:confirm-delete="'Esta seguro que desea elimar el cliente '
                    + ${cliente.name} + ' ' + ${cliente.lastname} + ' ?'"

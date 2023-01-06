@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://thymeleaf.org/extras/spring-security" lang="en">
 <head th:replace="~{layout/layout ::head}"></head>
 <body>
 
@@ -14,7 +14,9 @@
         <div class="card-body">
 
             <h3 class="card-title">
-                <a th:href="@{'/invoice/form/' + ${client.id}}" class="btn btn-outline-primary btn-xs">Crear Factura</a>
+                <a th:href="@{'/invoice/form/' + ${client.id}}"
+                   sec:authorize="hasRole('ROLE_ADMIN')"
+                   class="btn btn-outline-primary btn-xs">Crear Factura</a>
             </h3>
 
             <img th:if="${#strings.length(client.photo) > 0}" class="img-thumbnail rounded float-start"
@@ -36,8 +38,8 @@
                     <th>Descripción</th>
                     <th>Fecha</th>
                     <th>Total</th>
-                    <th>Ver</th>
-                    <th>Eliminar</th>
+                    <th sec:authorize="hasRole('ROLE_ADMIN')">Ver</th>
+                    <th sec:authorize="hasRole('ROLE_ADMIN')">Eliminar</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -46,10 +48,10 @@
                     <td th:text="${invoice.description}" class="text-white"></td>
                     <td th:text="${invoice.createAt}" class="text-white"></td>
                     <td th:text="${invoice.total}" class="text-white"></td>
-                    <td class="text-white">
+                    <td class="text-white" sec:authorize="hasRole('ROLE_ADMIN')">
                         <a th:href="@{'/invoice/see/' + ${invoice.id}}" class="btn btn-outline-primary btn-sm">Detalle</a>
                     </td>
-                    <td class="text-white">
+                    <td class="text-white" sec:authorize="hasRole('ROLE_ADMIN')">
                         <a th:href="@{'/invoice/delete/' + ${invoice.id}}" class="btn btn-outline-danger btn-sm"
                         onclick="return confirm('¿Esta seguro que desa eliminar la factura?');">Eliminar</a>
                     </td>
