@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.User.UserBuilder;
@@ -16,6 +17,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
 
 // https://docs.spring.io/spring-security/reference/servlet/authorization/authorize-http-requests.html
 
+@EnableMethodSecurity(securedEnabled = true)
 @Configuration
 public class SpringSecurityConfig{
 
@@ -28,11 +30,11 @@ public class SpringSecurityConfig{
                             try {
                                 auth
                                                 .requestMatchers("/", "/css/**", "/js/**", "/images/**", "/list" ).permitAll()
-                                                .requestMatchers("/see/**").hasRole("USER")
-                                                .requestMatchers("/uploads/**").hasRole("USER")
-                                                .requestMatchers("/form/**").hasRole("ADMIN")
-                                                .requestMatchers("/delete/**").hasRole("ADMIN")
-                                                .requestMatchers("/invoice/**").hasRole("ADMIN")
+//                                                .requestMatchers("/see/**").hasRole("USER")
+//                                                .requestMatchers("/uploads/**").hasRole("USER")
+//                                                .requestMatchers("/form/**").hasRole("ADMIN")
+//                                                .requestMatchers("/delete/**").hasRole("ADMIN")
+//                                                .requestMatchers("/invoice/**").hasRole("ADMIN")
                                                 .anyRequest().authenticated()
                                                 .and()
                                                 .formLogin()

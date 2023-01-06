@@ -15,6 +15,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -46,6 +47,7 @@ public class ClientController {
 
     protected final Log logger = LogFactory.getLog(this.getClass());
 
+    @Secured("ROLE_USER")
     @GetMapping("/uploads/{filename:.+}")
     public ResponseEntity<Resource> seePhoto(@PathVariable String filename) {
         Resource resource = null;
@@ -57,7 +59,7 @@ public class ClientController {
         return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"").body(resource);
     }
 
-
+    @Secured("ROLE_USER")
     @GetMapping("/see/{id}")
     public String see(@PathVariable("id") Long id, Model model, RedirectAttributes flash) {
 //        Client client = clientService.findById(id);
@@ -125,6 +127,7 @@ public class ClientController {
         return "list";
     }
 
+    @Secured("ROLE_ADMIN")
     @GetMapping("/form")
     public String create(Model model) {
 
@@ -135,6 +138,7 @@ public class ClientController {
         return "form";
     }
 
+    @Secured("ROLE_ADMIN")
     @PostMapping("/form")
     public String save(@Valid Client client, BindingResult result, Model model, @RequestParam("file") MultipartFile photo, RedirectAttributes flash, SessionStatus status) {
 
@@ -170,6 +174,7 @@ public class ClientController {
         return "redirect:list";
     }
 
+    @Secured("ROLE_ADMIN")
     @GetMapping("/form/{id}")
     public String edit(@PathVariable Long id, Model model, RedirectAttributes flash) {
 
@@ -192,6 +197,7 @@ public class ClientController {
         return "form";
     }
 
+    @Secured("ROLE_ADMIN")
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable Long id, RedirectAttributes flash) {
 
