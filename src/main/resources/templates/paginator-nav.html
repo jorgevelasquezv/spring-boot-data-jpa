@@ -6,8 +6,8 @@
 
   <ul class="pagination justify-content-center pagination-lg">
     <li class="page-item">
-      <span class="page-link disabled" th:if="${page.isFirst()}">Primera</span>
-      <a class="page-link" th:if="${!page.isFirst()}" th:href="@{${page.url}(page=0)}">Primera</a>
+      <span class="page-link disabled" th:if="${page.isFirst()}" th:text="#{text.paginator.first}">Primera</span>
+      <a class="page-link" th:if="${!page.isFirst()}" th:href="@{${page.url}(page=0)}" th:text="#{text.paginator.first}">Primera</a>
     </li>
     <li class="page-item">
       <span class="page-link disabled" th:if="${!page.isHasPrevious()}">&laquo;</span>
@@ -22,8 +22,8 @@
       <a class="page-link" th:if="${page.isHasNext()}" th:href="@{${page.url}(page=${page.actualPage})}">&raquo;</a>
     </li>
     <li class="page-item">
-      <span class="page-link disabled" th:if="${page.isLast()}">Ultima</span>
-      <a class="page-link" th:if="${!page.isLast()}" th:href="@{${page.url}(page=${page.totalPage - 1})}">Ultima</a>
+      <span class="page-link disabled" th:if="${page.isLast()}" th:text="#{text.paginator.last}">Ultima</span>
+      <a class="page-link" th:if="${!page.isLast()}" th:href="@{${page.url}(page=${page.totalPage - 1})}" th:text="#{text.paginator.last}">Ultima</a>
     </li>
   </ul>
 

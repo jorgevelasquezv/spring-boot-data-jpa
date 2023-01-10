@@ -16,7 +16,7 @@
             <h3 class="card-title">
                 <a th:href="@{'/invoice/form/' + ${client.id}}"
                    sec:authorize="hasRole('ROLE_ADMIN')"
-                   class="btn btn-outline-primary btn-xs">Crear Factura</a>
+                   class="btn btn-outline-primary btn-xs" th:text="#{text.see.crear_factura}">Crear Factura</a>
             </h3>
 
             <img th:if="${#strings.length(client.photo) > 0}" class="img-thumbnail rounded float-start"
@@ -29,17 +29,17 @@
                 <li class="list-group-item bg-dark text-white" th:text="${client.createAt}"></li>
             </ul>
             <div class="alert alert-info my-4" th:if="${#lists.isEmpty(client.invoices)}"
-                 th:text="'No hay facturas asignadas para el cliente ' + ${client.name} + ' '+ ${client.lastname} "></div>
+                 th:text="#{text.see.no_factura} + ${client.name} + ' '+ ${client.lastname} "></div>
             <table class="table table-bordered table-striped my-4 text-white"
                    th:if="${!#lists.isEmpty(client.invoices)}">
                 <thead>
                 <tr>
-                    <th>Folio</th>
-                    <th>Descripción</th>
-                    <th>Fecha</th>
-                    <th>Total</th>
-                    <th sec:authorize="hasRole('ROLE_ADMIN')">Ver</th>
-                    <th sec:authorize="hasRole('ROLE_ADMIN')">Eliminar</th>
+                    <th th:text="#{text.see.folio}">Folio</th>
+                    <th th:text="#{text.see.descripcion}">Descripción</th>
+                    <th th:text="#{text.see.fecha}">Fecha</th>
+                    <th th:text="#{text.see.total}">Total</th>
+                    <th sec:authorize="hasRole('ROLE_ADMIN')" th:text="#{text.see.ver}">Ver</th>
+                    <th sec:authorize="hasRole('ROLE_ADMIN')" th:text="#{text.see.eliminar}">Eliminar</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -49,11 +49,11 @@
                     <td th:text="${invoice.createAt}" class="text-white"></td>
                     <td th:text="${invoice.total}" class="text-white"></td>
                     <td class="text-white" sec:authorize="hasRole('ROLE_ADMIN')">
-                        <a th:href="@{'/invoice/see/' + ${invoice.id}}" class="btn btn-outline-primary btn-sm">Detalle</a>
+                        <a th:href="@{'/invoice/see/' + ${invoice.id}}" class="btn btn-outline-primary btn-sm" th:text="#{text.see.detalle}">Detalle</a>
                     </td>
                     <td class="text-white" sec:authorize="hasRole('ROLE_ADMIN')">
                         <a th:href="@{'/invoice/delete/' + ${invoice.id}}" class="btn btn-outline-danger btn-sm"
-                        onclick="return confirm('¿Esta seguro que desa eliminar la factura?');">Eliminar</a>
+                        onclick="return confirm('¿Esta seguro que desa eliminar la factura?');" th:text="#{text.see.eliminar}">Eliminar</a>
                     </td>
                 </tr>
                 </tbody>

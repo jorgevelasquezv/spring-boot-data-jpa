@@ -20,13 +20,13 @@
                 <thead>
                 <tr>
                     <th sec:authorize="hasRole('ROLE_USER')">Id</th>
-                    <th>Nombre</th>
-                    <th>Apellido</th>
-                    <th>Email</th>
-                    <th>Fecha</th>
-                    <th sec:authorize="hasRole('ROLE_ADMIN')">Crear Factura</th>
-                    <th sec:authorize="hasRole('ROLE_ADMIN')">Editar</th>
-                    <th sec:authorize="hasRole('ROLE_ADMIN')">Eliminar</th>
+                    <th th:text="#{text.cliente.nombre}">Nombre</th>
+                    <th th:text="#{text.cliente.apellido}">Apellido</th>
+                    <th th:text="#{text.cliente.email}">Email</th>
+                    <th th:text="#{text.cliente.creteAt}">Fecha</th>
+                    <th sec:authorize="hasRole('ROLE_ADMIN')" th:text="#{text.cliente.crear}">Crear Factura</th>
+                    <th sec:authorize="hasRole('ROLE_ADMIN')" th:text="#{text.cliente.editar}">Editar</th>
+                    <th sec:authorize="hasRole('ROLE_ADMIN')" th:text="#{text.cliente.eliminar}">Eliminar</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -39,17 +39,17 @@
                     <td th:text="${cliente.email}"></td>
                     <td th:text="${cliente.createAt}"></td>
                     <td sec:authorize="hasRole('ROLE_ADMIN')">
-                        <a th:href="@{'/invoice/form/' + ${cliente.id}}" class="btn btn-outline-success btn-xs">Crear
+                        <a th:href="@{'/invoice/form/' + ${cliente.id}}" class="btn btn-outline-success btn-xs" th:text="#{text.cliente.crear}">Crear
                             Factura</a>
                     </td>
                     <td sec:authorize="hasRole('ROLE_ADMIN')">
-                        <a th:href="@{/form/} + ${cliente.id}" class="btn btn-outline-warning btn-xs">Editar</a>
+                        <a th:href="@{/form/} + ${cliente.id}" class="btn btn-outline-warning btn-xs" th:text="#{text.cliente.editar}">Editar</a>
                     </td>
                     <td sec:authorize="hasRole('ROLE_ADMIN')">
                         <a th:href="@{/delete/} + ${cliente.id}" class="btn btn-outline-danger btn-xs"
-                           th:confirm-delete="'Esta seguro que desea elimar el cliente '
+                           th:confirm-delete="#{text.cliente.confirmar}
                    + ${cliente.name} + ' ' + ${cliente.lastname} + ' ?'"
-                           onclick="return confirm(this.getAttribute('confirm-delete'))">Eliminar</a>
+                           onclick="return confirm(this.getAttribute('confirm-delete'))" th:text="#{text.cliente.eliminar}">Eliminar</a>
                     </td>
                 </tr>
                 </tbody>

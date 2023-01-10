@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -33,6 +34,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.Collection;
+import java.util.Locale;
 
 
 @Controller
@@ -46,6 +48,9 @@ public class ClientController {
     private IUploadFileService uploadFileService;
 
     protected final Log logger = LogFactory.getLog(this.getClass());
+
+    @Autowired
+    private MessageSource messageSource;
 
     @Secured("ROLE_USER")
     @GetMapping("/uploads/{filename:.+}")
@@ -61,16 +66,17 @@ public class ClientController {
 
     @Secured("ROLE_USER")
     @GetMapping("/see/{id}")
-    public String see(@PathVariable("id") Long id, Model model, RedirectAttributes flash) {
+    public String see(@PathVariable("id") Long id, Model model, RedirectAttributes flash, Locale locale) {
 //        Client client = clientService.findById(id);
         Client client = clientService.fetchByIdWithInvoice(id);
         if (client == null) {
-            flash.addFlashAttribute("error", "EL cliente no existe en la base de datos");
+            flash.addFlashAttribute("error", messageSource.getMessage("text.flash.see.error.id", null, locale));
             return "redirect:/list";
         }
 
         model.addAttribute("client", client);
-        model.addAttribute("titulo", "Detalle cliente: "
+        model.addAttribute("titulo",
+                messageSource.getMessage("text.flash.see.titulo.form.detail", null, locale)
                 + client.getName() + " " + client.getLastname());
         return "see";
     }
@@ -79,7 +85,7 @@ public class ClientController {
     @GetMapping({"/list", "/"})
     public String listAll(@RequestParam(name = "page", defaultValue = "0") int page,
                           Model model, Authentication authentication,
-                          HttpServletRequest request) {
+                          HttpServletRequest request, Locale locale) {
 
         if (authentication != null){
             logger.info("Usuario autenticado correctamente, username: ".concat(authentication.getName()));
@@ -120,7 +126,7 @@ public class ClientController {
 
         PageRender<Client> pageRender = new PageRender<>("/list", clients);
 
-        model.addAttribute("titulo", "Listado de clientes");
+        model.addAttribute("titulo", messageSource.getMessage("text.cliente.lista.titulo", null, locale));
         model.addAttribute("clientes", clients);
         model.addAttribute("page", pageRender);
 
@@ -129,21 +135,23 @@ public class ClientController {
 
     @Secured("ROLE_ADMIN")
     @GetMapping("/form")
-    public String create(Model model) {
+    public String create(Model model, Locale locale) {
 
         Client client = new Client();
         model.addAttribute("client", client);
-        model.addAttribute("titulo", "Formulario de Cliente");
+        model.addAttribute("titulo", messageSource.getMessage("text.flash.see.titulo.form", null, locale));
 
         return "form";
     }
 
     @Secured("ROLE_ADMIN")
     @PostMapping("/form")
-    public String save(@Valid Client client, BindingResult result, Model model, @RequestParam("file") MultipartFile photo, RedirectAttributes flash, SessionStatus status) {
+    public String save(@Valid Client client, BindingResult result, Model model,
+                       @RequestParam("file") MultipartFile photo, RedirectAttributes flash,
+                       SessionStatus status, Locale locale) {
 
         if (result.hasFieldErrors()) {
-            model.addAttribute("titulo", "Formulario de Cliente");
+            model.addAttribute("titulo", messageSource.getMessage("text.flash.see.titulo.form", null, locale));
             return "form";
         }
 
@@ -161,11 +169,13 @@ public class ClientController {
             }
 
             flash.addFlashAttribute("info",
-                    "Ha cargado correctamente la imagen '" + uniqueFilename + "'");
+                    messageSource.getMessage("text.flash.see.info.image", null, locale) + uniqueFilename + "'");
             client.setPhoto(uniqueFilename);
 
         }
-        String mensajeFlash = (client.getId() != null) ? "Cliente editado con éxito" : "Cliente creado con éxito";
+        String mensajeFlash = (client.getId() != null)
+                ? messageSource.getMessage("text.flash.see.success.edit.client", null, locale)
+                : messageSource.getMessage("text.flash.see.success.create.client", null, locale);
         clientService.save(client);
 
         status.setComplete();
@@ -176,38 +186,41 @@ public class ClientController {
 
     @Secured("ROLE_ADMIN")
     @GetMapping("/form/{id}")
-    public String edit(@PathVariable Long id, Model model, RedirectAttributes flash) {
+    public String edit(@PathVariable Long id, Model model, RedirectAttributes flash, Locale locale) {
 
         Client client = null;
 
         if (id > 0) {
             client = clientService.findById(id);
             if (client == null) {
-                flash.addFlashAttribute("error", "El id del cliente no existe en la BBDD");
+                flash.addFlashAttribute("error", messageSource.getMessage("text.flash.see.error.client.id.null", null, locale));
                 return "redirect:/list";
             }
         } else {
-            flash.addFlashAttribute("error", "El id del cliente no puede ser 0");
+            flash.addFlashAttribute("error", messageSource.getMessage("text.flash.see.error.client.id.zero", null, locale));
             return "redirect:/list";
         }
 
         model.addAttribute("client", client);
-        model.addAttribute("titulo", "Editar Cliente");
+        model.addAttribute("titulo", messageSource.getMessage("text.flash.see.titulo.form.edit", null, locale));
 
         return "form";
     }
 
     @Secured("ROLE_ADMIN")
     @GetMapping("/delete/{id}")
-    public String delete(@PathVariable Long id, RedirectAttributes flash) {
+    public String delete(@PathVariable Long id, RedirectAttributes flash, Locale locale) {
 
         if (id > 0) {
             Client client = clientService.findById(id);
             clientService.delete(id);
-            flash.addFlashAttribute("success", "Cliente eliminado con éxito");
+            flash.addFlashAttribute("success",
+                    messageSource.getMessage("text.flash.see.success.delete.client", null, locale));
 
             if (uploadFileService.delete(client.getPhoto())) {
-                flash.addFlashAttribute("info", "Foto " + client.getPhoto() + " eliminada con éxito");
+                flash.addFlashAttribute("info",
+                        messageSource.getMessage("text.flash.see.success.delete.photo", null, locale)
+                                + client.getPhoto());
             }
         }
         return "redirect:/list";
@@ -231,13 +244,5 @@ public class ClientController {
 
         return authorities.contains(new SimpleGrantedAuthority(role));
 
-//        for (GrantedAuthority authority: authorities) {
-//            if (role.equals(authority.getAuthority())){
-//                logger.info("Usuario autenticado: ".concat(authentication.getName()).concat(" Su rol es: ").concat(authority.getAuthority()));
-//                return true;
-//            }
-//        }
-//
-//        return false;
     }
 }

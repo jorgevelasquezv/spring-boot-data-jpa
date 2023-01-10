@@ -13,13 +13,13 @@
         <div class="card-body">
 
             <h4 class="card-title">
-                <a th:href="@{'/see/' + ${invoice.client.id}}" class="btn btn-outline-light btn-xs">&laquo; Volver</a>
+                <a th:href="@{'/see/' + ${invoice.client.id}}" class="btn btn-outline-light btn-xs" th:utext="#{text.invoice.form.volver}">&laquo; Volver</a>
             </h4>
 
             <form th:action="@{/invoice/form}" th:object="${invoice}" method="post">
 
                 <div class="input-group row my-3">
-                    <label for="cliente" class="col-sm-2 col-form-label" th:text="Cliente"></label>
+                    <label for="cliente" class="col-sm-2 col-form-label" th:text="#{text.invoice.form.cliente}"></label>
                     <div class="col-sm-6">
                         <input id="cliente" type="text" th:value="${invoice.client.name} + ' ' + ${invoice.client.lastname}" disabled
                                class="form-control ">
@@ -27,7 +27,7 @@
                 </div>
 
                 <div class="input-group row my-3">
-                    <label for="descripcion" class="col-sm-2 col-form-label" th:text="Descripción"></label>
+                    <label for="descripcion" class="col-sm-2 col-form-label" th:text="#{text.invoice.form.descripcion}"></label>
                     <div class="col-sm-6">
                         <input id="descripcion" type="text" th:field="*{description}" class="form-control"
                                th:errorclass="'form-control is-invalid'"/>
@@ -36,13 +36,13 @@
                     </div>
                 </div>
                 <div class="input-group row my-3">
-                    <label for="observacion" class="col-sm-2 col-form-label" th:text="Observación"></label>
+                    <label for="observacion" class="col-sm-2 col-form-label" th:text="#{text.invoice.form.observacion}"></label>
                     <div class="col-sm-6">
                         <textarea id="observacion" th:field="*{observation}" class="form-control"/>
                     </div>
                 </div>
                 <div class="input-group row my-3">
-                    <label for="buscar_producto" class="col-sm-2 col-form-label">Buscar Producto</label>
+                    <label for="buscar_producto" class="col-sm-2 col-form-label" th:text="#{text.invoice.form.buscar}"></label>
                     <div class="col-sm-6">
                         <input id="buscar_producto" type="text" name="buscar_producto" class="form-control"/>
                     </div>
@@ -53,16 +53,16 @@
                 <table id="loadItemsProducts" class="table table-dark table-sm table-striped table-hover">
                     <thead>
                     <tr>
-                        <th>Nombre</th>
-                        <th>Precio</th>
-                        <th>Cantidad</th>
-                        <th>Total</th>
-                        <th>Eliminar</th>
+                        <th th:text="#{text.invoice.form.nombre}">Nombre</th>
+                        <th th:text="#{text.invoice.form.precio}">Precio</th>
+                        <th th:text="#{text.invoice.form.cantidad}">Cantidad</th>
+                        <th th:text="#{text.invoice.form.total}">Total</th>
+                        <th th:text="#{text.invoice.form.eliminar}">Eliminar</th>
                     </tr>
                     </thead>
                     <tbody></tbody>
                 </table>
-                <h5>Total <span class="badge bg-secondary" id="grand_total">0</span></h5>
+                <h5 th:text="#{text.invoice.form.total}">Total <span class="badge bg-secondary" id="grand_total">0</span></h5>
 
                 <div class="form-group row my-3">
                     <div class="d-grid gap-2 col-8">
