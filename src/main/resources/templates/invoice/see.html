@@ -14,7 +14,8 @@
 
             <h4 class="card-title">
                 <a th:href="@{'/see/' + ${invoice.client.id}}" class="btn btn-outline-light btn-sm" th:utext="#{text.invoice.form.volver}">&laquo; Volver</a>
-                <a th:href="@{'/invoice/see/' + ${invoice.id}(format=pdf)}" class="btn btn-outline-danger btn-sm float-end">Exportar a PDF</a>
+                <a th:href="@{'/invoice/see/' + ${invoice.id}(format=pdf)}" class="btn btn-outline-danger btn-sm mx-2 float-end">PDF</a>
+                <a th:href="@{'/invoice/see/' + ${invoice.id}(format=xlsx)}" class="btn btn-outline-success btn-sm float-end">Excel</a>
             </h4>
 
             <ul class="list-group bg-dark my-2">
