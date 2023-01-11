@@ -2,6 +2,7 @@ package co.com.jorge.springboot.app.models.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.xml.bind.annotation.XmlTransient;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serial;
@@ -83,6 +84,7 @@ public class Invoice implements Serializable {
         this.createAt = createAt;
     }
 
+    @XmlTransient
     public Client getClient() {
         return client;
     }

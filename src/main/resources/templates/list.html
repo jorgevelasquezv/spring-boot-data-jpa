@@ -14,6 +14,7 @@
         <div class="card-body bg-dark">
             <h4 class="card-title">
                 <a class="btn btn-outline-primary btn-xs" th:href="@{/form}" sec:authorize="hasRole('ROLE_ADMIN')">Crear Clientes</a>
+                <a th:href="@{'/list'(format=xml)}" class="btn btn-outline-info btn-sm mx-2 float-end">XML</a>
                 <a th:href="@{'/list'(format=csv)}" class="btn btn-outline-success btn-sm float-end">CSV</a>
             </h4>
 
