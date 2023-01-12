@@ -31,7 +31,7 @@ public class SpringSecurityConfig{
         http.authorizeHttpRequests((auth) -> {
                             try {
                                 auth
-                                                .requestMatchers("/", "/css/**", "/js/**", "/images/**", "/list", "/locale" ).permitAll()
+                                                .requestMatchers("/", "/css/**", "/js/**", "/images/**", "/list", "/list-rest", "/api/clients/**", "/locale" ).permitAll()
                                                 .anyRequest().authenticated()
                                                 .and()
                                                 .formLogin()

@@ -4,6 +4,7 @@ import co.com.jorge.springboot.app.models.entities.Client;
 import co.com.jorge.springboot.app.models.service.IClientService;
 import co.com.jorge.springboot.app.models.service.IUploadFileService;
 import co.com.jorge.springboot.app.util.paginator.PageRender;
+import co.com.jorge.springboot.app.view.xml.ClienteList;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.apache.commons.logging.Log;
@@ -34,6 +35,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.Collection;
+import java.util.List;
 import java.util.Locale;
 
 
@@ -132,6 +134,14 @@ public class ClientController {
 
         return "list";
     }
+
+    @GetMapping("/list-rest")
+    @ResponseBody
+    public ClienteList listAllRest() {
+
+        return new ClienteList(clientService.findAll());
+    }
+
 
     @Secured("ROLE_ADMIN")
     @GetMapping("/form")
